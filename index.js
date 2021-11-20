@@ -10,6 +10,11 @@ io.on("connection", (socket) => {
   socket.on("chat message", (msg) => {
     io.emit("chat message", msg + " World!");
   });
+  socket.on("game update", (room, body) => {
+    console.log("game update");
+    console.log(room);
+    console.log(body);
+  });
 });
 
 httpServer.listen(port, () => {
