@@ -8,7 +8,10 @@ app.use(cors());
 const httpServer = require("http").Server(app);
 // const io = require("socket.io")(http);
 const io = require("socket.io")(httpServer, {
-  cors: { origin: "http://localhost:3000", methods: ["GET", "POST"] },
+  cors: {
+    origin: ["http://localhost:3000", "https://fitzels-trashgame.web.app/"],
+    methods: ["GET", "POST"],
+  },
 });
 const port = process.env.PORT || 8080;
 
@@ -32,11 +35,11 @@ httpServer.listen(port, () => {
 });
 
 sql_config = {
-  host: 'db4free.net',
-  user: 'fitzels',
+  host: "db4free.net",
+  user: "fitzels",
   password: env.SQL_PASSWORD,
-  database: 'fitzels',
-}
+  database: "fitzels",
+};
 
 async function query(sql, params) {
   const connection = await mysql.createConnection(sql_config);
@@ -48,8 +51,8 @@ async function query(sql, params) {
 /* GET users listing. */
 app.get("/update_score", function (req, res, next) {
   const result = query(
-      `INSERT INTO scores (user, highscore) VALUES (?, ?) ON DUPLICATE KEY UPDATE highscore=GREATEST(highscore, VALUES(highscore));`,
-      [req.query.user, req.query.score]
+    `INSERT INTO scores (user, highscore) VALUES (?, ?) ON DUPLICATE KEY UPDATE highscore=GREATEST(highscore, VALUES(highscore));`,
+    [req.query.user, req.query.score]
   );
-  res.send({status: "success"});
+  res.send({ status: "success" });
 });
