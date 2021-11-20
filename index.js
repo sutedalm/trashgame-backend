@@ -1,4 +1,6 @@
 const cors = require("cors");
+const mysql = require("mysql2");
+const env = process.env;
 
 const app = require("express")();
 app.use(cors());
@@ -29,7 +31,25 @@ httpServer.listen(port, () => {
   console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
 
+sql_config = {
+  host: 'db4free.net',
+  user: 'fitzels',
+  password: env.SQL_PASSWORD,
+  database: 'fitzels',
+}
+
+async function query(sql, params) {
+  const connection = await mysql.createConnection(sql_config);
+  const results = await connection.execute(sql, params);
+
+  return results;
+}
+
 /* GET users listing. */
-app.get("/database", function (req, res, next) {
-  res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
+app.get("/update_score", function (req, res, next) {
+  const result = query(
+      `INSERT INTO scores (user, highscore) VALUES (?, ?) ON DUPLICATE KEY UPDATE highscore=GREATEST(highscore, VALUES(highscore));`,
+      [req.query.user, req.query.score]
+  );
+  res.send({status: "success"});
 });
