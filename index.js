@@ -15,9 +15,13 @@ io.on("connection", (socket) => {
     io.emit("chat message", msg + " World!");
   });
   socket.on("game update", (room, body) => {
-    console.log("game update");
-    console.log(room);
-    console.log(body);
+    console.log("game update ", room, body);
+    socket.to(room).emit("game update", body);
+  });
+  socket.on("join room", (room, senderId, callback) => {
+    console.log("player joining ", room, senderId, callback);
+    socket.to(room).emit("start game", senderId);
+    callback();
   });
 });
 
