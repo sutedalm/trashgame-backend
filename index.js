@@ -9,7 +9,7 @@ const httpServer = require("http").Server(app);
 // const io = require("socket.io")(http);
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: ["http://localhost:3000", "https://fitzels-trashgame.web.app/"],
+    origin: ["http://localhost:3000", "https://fitzels-trashgame.web.app"],
     methods: ["GET", "POST"],
   },
 });
