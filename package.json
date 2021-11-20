@@ -1,0 +1,15 @@
+{
+  "name": "trashgame-backend",
+  "version": "0.0.1",
+  "description": "the backend for trashgame",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^4.1.2"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
