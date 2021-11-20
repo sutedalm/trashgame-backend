@@ -1,4 +1,8 @@
+const cors = require("cors");
+
 const app = require("express")();
+app.use(cors());
+
 const httpServer = require("http").Server(app);
 // const io = require("socket.io")(http);
 const io = require("socket.io")(httpServer, {
@@ -21,6 +25,7 @@ httpServer.listen(port, () => {
   console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+/* GET users listing. */
+app.get("/database", function (req, res, next) {
+  res.send({ express: "YOUR EXPRESS BACKEND IS CONNECTED TO REACT" });
 });
