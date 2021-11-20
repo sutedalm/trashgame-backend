@@ -20,3 +20,7 @@ io.on("connection", (socket) => {
 httpServer.listen(port, () => {
   console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
