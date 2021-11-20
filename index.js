@@ -1,5 +1,5 @@
 const cors = require("cors");
-const mysql = require("mysql2");
+const mysql = require("mysql2/promise");
 const env = process.env;
 
 const app = require("express")();
@@ -38,16 +38,25 @@ sql_config = {
   database: 'fitzels',
 }
 
-async function query(sql, params) {
+async function make_query(sql, params) {
   const connection = await mysql.createConnection(sql_config);
-  const results = await connection.execute(sql, params);
+  const [results, ] = await connection.execute(sql, params);
 
   return results;
 }
 
-/* GET users listing. */
+app.get("/get_scores", async function (req, res, next) {
+  const result = await make_query(
+      `SELECT *
+       FROM scores
+       ORDER BY highscore DESC`, []
+  );
+  console.log(result)
+  res.send({data: result});
+});
+
 app.get("/update_score", function (req, res, next) {
-  const result = query(
+  const result = make_query(
       `INSERT INTO scores (user, highscore) VALUES (?, ?) ON DUPLICATE KEY UPDATE highscore=GREATEST(highscore, VALUES(highscore));`,
       [req.query.user, req.query.score]
   );
