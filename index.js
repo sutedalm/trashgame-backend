@@ -52,7 +52,7 @@ async function make_query(sql, params) {
   let results = {};
   try {
     const connection = await mysql.createConnection(sql_config);
-    [results, ] = await connection.execute(sql, params);
+    [results] = await connection.execute(sql, params);
   } catch (error) {
     console.log(error);
     results = { error: error };
@@ -77,5 +77,5 @@ app.get("/update_score", function (req, res, next) {
     `INSERT INTO scores (user, highscore) VALUES (?, ?) ON DUPLICATE KEY UPDATE highscore=GREATEST(highscore, VALUES(highscore));`,
     [req.query.user, req.query.score]
   );
-  res.send({ status: "success" });
+  res.send({ status: result || success });
 });
