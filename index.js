@@ -34,10 +34,17 @@ httpServer.listen(port, () => {
   console.log(`Socket.IO server running at http://localhost:${port}/`);
 });
 
-sql_config = {
+/*sql_config = {
   host: "db4free.net",
   user: "fitzels",
   password: env.SQL_PASSWORD,
+  database: "fitzels",
+};*/
+sql_config = {
+  host: "135.125.238.252",
+  user: "root",
+  password: env.SQL_PASSWORD,
+  port: "33061",
   database: "fitzels",
 };
 
@@ -45,7 +52,7 @@ async function make_query(sql, params) {
   let results = {};
   try {
     const connection = await mysql.createConnection(sql_config);
-    results = await connection.execute(sql, params);
+    [results, ] = await connection.execute(sql, params);
   } catch (error) {
     console.log(error);
   }
@@ -57,7 +64,7 @@ app.get("/get_scores", async function (req, res, next) {
   const result = await make_query(
     `SELECT *
        FROM scores
-       ORDER BY highscore DESC`,
+       ORDER BY highscore DESC LIMIT 10`,
     []
   );
   console.log(result);
