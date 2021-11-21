@@ -43,12 +43,12 @@ sql_config = {
 
 async function make_query(sql, params) {
   let results = {};
-  try {
-    const connection = await mysql.createConnection(sql_config);
-    results = await connection.execute(sql, params);
-  } catch (error) {
-    console.log(error);
-  }
+  // try {
+  const connection = await mysql.createConnection(sql_config);
+  results = await connection.execute(sql, params);
+  // } catch (error) {
+  //   console.log(error);
+  // }
 
   return results;
 }
