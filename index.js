@@ -55,6 +55,7 @@ async function make_query(sql, params) {
     [results, ] = await connection.execute(sql, params);
   } catch (error) {
     console.log(error);
+    results = { error: error };
   }
 
   return results;
